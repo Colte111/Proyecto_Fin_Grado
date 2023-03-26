@@ -1,0 +1,30 @@
+﻿@using Modelos
+@model IEnumerable<ALARMA>
+
+@{
+    
+}
+<div class="container">
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-1" style="margin-top:10px">
+        <br />
+        <h3>Alarmas Programadas</h3>
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <i class="bi bi-alarm">
+                    @item.fecha
+                </i>
+            </div>
+            <br />
+        }
+        <br />
+
+    </div>
+    <a href="InsertarAlarma" class="btn d-inline-flex btn-sm btn-primary mx-1">
+        <span class=" pe-2">
+            <i class="bi bi-plus"></i>
+        </span>
+        <span>Create</span>
+    </a>
+</div>

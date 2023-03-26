@@ -1,0 +1,13 @@
+﻿@import url("https://unpkg.com/@webpixels/css@1.1.5/dist/index.css");
+@import url("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css");
+.avatar-parent-child{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+#24 {
+    margin-left: 50px !important;
+}
+
+

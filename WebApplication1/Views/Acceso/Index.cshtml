@@ -1,0 +1,43 @@
+﻿@using Modelos
+@model USUARIO
+@{
+    Layout ="/Views/Shared/_LayoutLogin.cshtml";
+}
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/login2.css">
+
+
+ @using (Html.BeginForm("Index", "Acceso", FormMethod.Post))
+ {
+    <div class="right">
+        <h5>Login</h5>
+        <p>Todavía no tienes cuenta? @Html.ActionLink("Create your account", "Register") solo tarda un par de minutos</p>
+        <div class="inputs">
+            @Html.TextBoxFor(x => x.Correo, new { @placeholder = Html.DisplayNameFor(x => x.Correo) })
+            @Html.ValidationMessageFor(x => x.Correo, null, new { @class = "text-danger" })
+        </div>
+        <br />
+
+            <div class="inputs">
+                @Html.PasswordFor(x => x.Constraseña, new { id="contra",@placeholder = Html.DisplayNameFor(x => x.Constraseña)})
+            </div>
+
+        <br><br>
+
+        <p id="error">@TempData["error"]</p>
+
+        <div class="remember-me--forget-password">
+            <!-- Angular -->
+            <label>
+                <input type="checkbox" name="item" checked />
+                <span class="text-checkbox">Recuerdame</span>
+            </label>
+            <p> @Html.ActionLink("Contraseña olvidada?", "Contraseñaolvidada") </p>
+        </div>
+
+        <br>
+        <br />
+        <button id="Login" type="submit">Iniciar sesion</button>
+    </div>
+ }

@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+
+<title>CARMAPS</title>
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" href="~/css/login2.css">
+
+
+    <div class="box-form">
+        <div class="left">
+            <div class="overlay">
+                <h1>Car <br />Maps</h1>
+                <br />
+                <p>
+                   Carmaps nunca más dejarás de olvidarte de donde está tu coche gracias
+                   a nuestra tecnología punta de geolocalización.
+                </p>
+                <span>
+                    <p>Logeate con nuestras redes sociales</p>
+                    @Html.ActionLink("Logeate con facebook","facebook.com",null,null, new {@class="fa fa-facebook"})
+                    @Html.ActionLink("Logeate con Twitter","Twitter.com",null,null, new {@class="fa fa-twitter"})
+                </span>
+            </div>
+        </div>
+
+
+        
+            @RenderBody()
+        
+
+    </div>
+
+
