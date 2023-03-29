@@ -12,16 +12,16 @@
  {
     <div class="right">
         <h5>Login</h5>
-        <p>Todavía no tienes cuenta? @Html.ActionLink("Create your account", "Register") solo tarda un par de minutos</p>
+        <p>¿Todavía no tienes cuenta? @Html.ActionLink("Create una cuenta", "Register")</p>
         <div class="inputs">
             @Html.TextBoxFor(x => x.Correo, new { @placeholder = Html.DisplayNameFor(x => x.Correo) })
             @Html.ValidationMessageFor(x => x.Correo, null, new { @class = "text-danger" })
         </div>
         <br />
 
-            <div class="inputs">
-                @Html.PasswordFor(x => x.Constraseña, new { id="contra",@placeholder = Html.DisplayNameFor(x => x.Constraseña)})
-            </div>
+        <div class="inputs">
+            @Html.PasswordFor(x => x.Constraseña, new { id="contra",@placeholder = Html.DisplayNameFor(x => x.Constraseña)})
+        </div>
 
         <br><br>
 

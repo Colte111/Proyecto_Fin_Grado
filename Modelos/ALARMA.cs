@@ -7,12 +7,7 @@ namespace Modelos
     public class ALARMA
     {
         public int ALARMAid { get; set; }
-        public string fecha { get; set; }
-        public string hora { get; set; }
-        public string Nombre { get; set; }
-        [Display(Name = "Fecha de Alarma")]
-
-        public DateTime DOB { get; set; }
+        public DateTime fecha { get; set; }
 
         public ALARMA()
         {
@@ -20,10 +15,12 @@ namespace Modelos
         }
         public ALARMA(DataRow row)
         {
+            fecha = (DateTime)row["FECHA"];
+        }
 
-            DOB = (DateTime)row["FECHA"];
-            
-            this.fecha = DOB.ToString();
+        public DateTime GetAlarma()
+        {
+            return fecha;
         }
 
     }

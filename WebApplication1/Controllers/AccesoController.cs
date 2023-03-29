@@ -12,6 +12,7 @@ namespace WebApplication1.Controllers
 {
     public class AccesoController : Controller
     {
+        CD_Alarma cd_alarma = new CD_Alarma();
         public IActionResult Index()
         {
             return View();
@@ -22,6 +23,7 @@ namespace WebApplication1.Controllers
         public async Task<IActionResult> Index(USUARIO _usuario)
         {
             CD_Usuario cd_usuario = new CD_Usuario();
+            ALARMA _alarma = new ALARMA();
 
             var usuario = cd_usuario.ValidarUsuario(_usuario.Correo,_usuario.Constraseña);
 
@@ -34,15 +36,21 @@ namespace WebApplication1.Controllers
                 {
                     new Claim(ClaimTypes.Name, usuario.Nombre),
                     new Claim("Correo", usuario.Correo),
+                    new Claim("id",usuario.USUARIOid.ToString())
                 };
+
+              
                 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 #endregion
 
-                HttpContext.Session.SetString("username", usuario.Nombre);
+                //Guardo el id en una sesion
+                
                 HttpContext.Session.SetInt32("id", usuario.USUARIOid);
+
+                
 
                 return RedirectToAction("Index", "Home");
             }
@@ -63,6 +71,5 @@ namespace WebApplication1.Controllers
             return RedirectToAction("Index");
 
         }
-
     }
 }

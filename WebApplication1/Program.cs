@@ -1,9 +1,15 @@
 //1.- PRIMERO =================================================================
 using Microsoft.AspNetCore.Authentication.Cookies;
+using WebApplication1;
+using WebApplication1.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
+//Servicio del Hub
+builder.Services.AddSignalR();
+
 
 //2.- SEGUNDO - CONFIGURAR NUESTRA COOKIE DE AUTENTICACION =================
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -31,6 +37,8 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseStaticFiles();
 
+
+
 app.UseRouting();
 
 //3.- TERCERO ==================================================================
@@ -38,6 +46,13 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 app.UseSession();
+
+//Servicio del hub
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<AlarmHub>("/alarmHub");
+    endpoints.MapControllers();
+});
 
 app.MapControllerRoute(
     name: "default",

@@ -4,6 +4,11 @@ using WebApplication1.Models;
 
 
 using Microsoft.AspNetCore.Authorization;
+using CapaDominio;
+using MessagePack;
+using Modelos;
+using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 
 namespace WebApplication1.Controllers
 {
@@ -11,38 +16,49 @@ namespace WebApplication1.Controllers
     [Authorize]
     public class HomeController : Controller
     {
+        CD_Alarma cd_alarma = new CD_Alarma();
         private readonly ILogger<HomeController> _logger;
+        public IHubContext<AlarmHub> _alarmHubContext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IHubContext<AlarmHub> alarmHubContext)
         {
-            _logger = logger;
+            _alarmHubContext = alarmHubContext;
+        }
+        public int ID()
+        {
+            var user = HttpContext.User;
+            var _id = user.FindFirstValue("id");
+
+            int id = Int32.Parse(_id);
+
+            return id;
+        }
+
+        public DateTime ALARMA()
+        {
+            var _alarma = new ALARMA();
+            _alarma = cd_alarma._primeraAlarma(ID());
+
+            return _alarma.fecha;
+        }
+
+        public async Task StartAlarmAsync(DateTime alarmTime)
+        {
+            // Obtener la hora actual y calcular la cantidad de segundos hasta que suene la alarma
+            var currentTime = DateTime.Now;
+            var timeToAlarm = (int)(alarmTime - currentTime).TotalSeconds;
+
+            // Esperar hasta que sea hora de sonar la alarma
+            await Task.Delay(timeToAlarm * 1000);
+
+            // Enviar el mensaje a través del concentrador de SignalR
+            await _alarmHubContext.Clients.All.SendAsync("alarm");
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        
-        public IActionResult Ventas()
-        {
-            return View();
-        }
-
-        
-        public IActionResult Compras()
-        {
-            return View();
-        }
-
-        public IActionResult Clientes()
-        {
-            return View();
-        }
-
-        [AllowAnonymous]
-        public IActionResult Privacy()
-        {
+            var date = DateTime.Parse("28/03/2023 16:51:00");
+            StartAlarmAsync(ALARMA());
             return View();
         }
 

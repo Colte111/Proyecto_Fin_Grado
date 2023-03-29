@@ -27,5 +27,25 @@ namespace CapaDominio
 
             return _alarma;
         }
+
+        public ALARMA _primeraAlarma(int id)
+        {
+            ALARMA _alarma = new ALARMA();
+            DataTable dt = new DataTable();
+
+            dt = cad_alarma.PrimeraAlarma(id);
+
+            foreach (DataRow dr in dt.Rows)
+            {
+                _alarma = new ALARMA(dr);
+            }
+
+            return _alarma;
+        }
+
+        public void _insertarAlarma(int id,DateTime fecha)
+        {
+            cad_alarma.InsertarAlarma(id,fecha);
+        }
     }
 }

@@ -30,7 +30,6 @@ namespace CapaDominio
 
         public void InsertarUsuario(string nombre, string apellidos, string correo, string fechanac, string genero,string contraseña)
         {
-
             objetoCD.UsuarioNuevo(nombre, apellidos, correo, fechanac, genero, contraseña);
         }
 

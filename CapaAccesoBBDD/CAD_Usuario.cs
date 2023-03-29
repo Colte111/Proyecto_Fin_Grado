@@ -12,10 +12,10 @@ namespace CapaAccesoBBDD
     {
         private CAD_Conexion conexion = new CAD_Conexion();
         SqlDataReader leer;
-        DataTable tabla = new DataTable();
         SqlCommand comando = new SqlCommand();
         public DataTable Mostrar()
         {
+            DataTable tabla = new DataTable();
             comando.Connection = conexion.AbrirConexion();
             comando.CommandText = "selectusuario";
             comando.CommandType = CommandType.StoredProcedure;
