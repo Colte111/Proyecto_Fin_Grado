@@ -44,20 +44,23 @@ namespace WebApplication1.Controllers
 
         public async Task StartAlarmAsync(DateTime alarmTime)
         {
-            // Obtener la hora actual y calcular la cantidad de segundos hasta que suene la alarma
-            var currentTime = DateTime.Now;
-            var timeToAlarm = (int)(alarmTime - currentTime).TotalSeconds;
+            //Compruebo que el valor del DateTime es mayor a now **EXPLICAR**
+            if (alarmTime > DateTime.Now)
+            {
+                // Obtener la hora actual y calcular la cantidad de segundos hasta que suene la alarma
+                var currentTime = DateTime.Now;
+                var timeToAlarm = (int)(alarmTime - currentTime).TotalSeconds;
 
-            // Esperar hasta que sea hora de sonar la alarma
-            await Task.Delay(timeToAlarm * 1000);
+                // Esperar hasta que sea hora de sonar la alarma
+                await Task.Delay(timeToAlarm * 1000);
 
-            // Enviar el mensaje a través del concentrador de SignalR
-            await _alarmHubContext.Clients.All.SendAsync("alarm");
+                // Enviar el mensaje a través del concentrador de SignalR
+                await _alarmHubContext.Clients.All.SendAsync("alarm");
+            }
         }
 
         public IActionResult Index()
         {
-            var date = DateTime.Parse("28/03/2023 16:51:00");
             StartAlarmAsync(ALARMA());
             return View();
         }

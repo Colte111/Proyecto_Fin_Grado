@@ -1,0 +1,47 @@
+﻿@using Modelos
+@model AUTOMOVIL
+@{
+    Layout = "/Views/Shared/_LayoutAuto.cshtml";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CapaVista</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/sidebars1.css">
+</head>
+
+    <div class="text-center">
+        <br />
+        <br />
+        <br />
+        @using (Html.BeginForm("NewAuto", "Auto", FormMethod.Post))
+        {
+            @Html.TextBoxFor(x => x.Marca, new { @placeholder = Html.DisplayNameFor(x => x.Marca) })
+            <br />
+            <br />
+            @Html.TextBoxFor(x => x.Matricula, new { @placeholder=Html.DisplayNameFor(x => x.Matricula)})
+            <br />
+            <br />
+            @Html.DropDownListFor(x => x.Consumible,new List<SelectListItem> {
+                                new SelectListItem { Value = "DIESEL" , Text = "DIESEL" },
+                                new SelectListItem { Value = "GASOLINA" , Text = "GASOLINA" },
+                                new SelectListItem { Value = "ELECTRICO" , Text = "ELECTRICO" },
+                                new SelectListItem { Value = "GAS" , Text = "GAS" },
+                                new SelectListItem { Value = "OTRO" , Text = "OTRO" },
+                              })
+           
+            <br />
+            <br />
+            <button id="Login" type="submit" class="btn d-inline-flex btn-sm btn-primary mx-1">
+               Crear nuevo coche
+            </button>
+        
+        }
+    </div>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/localizacion.js"></script>
+<script src="~/js/alarma.js"></script>

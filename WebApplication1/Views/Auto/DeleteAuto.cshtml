@@ -1,0 +1,34 @@
+﻿@using Modelos
+@model List<AUTOMOVIL>
+@{
+    Layout = "/Views/Shared/_LayoutAuto.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - CapaVista</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/sidebars1.css">
+    </head>
+
+        
+    <div class="text-center">
+        <br />
+        <br />
+        <br />
+        @using (Html.BeginForm("DeleteAuto", "Auto", FormMethod.Post))
+        {
+            <h1>Borrar coche</h1>
+            <br />
+            @Html.DropDownList("AUTOMOVILid",new SelectList(Model ,"AUTOMOVILid","Matricula" ) )
+            <br />
+            <button type="submit" class="btn d-inline-flex btn-sm btn-primary mx-1">Borrar coche</button>
+        }
+    </div>
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/localizacion.js"></script>
+<script src="~/js/alarma.js"></script>

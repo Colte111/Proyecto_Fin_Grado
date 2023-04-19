@@ -44,7 +44,7 @@
                 <div class="collapse navbar-collapse" id="sidebarCollapse">
                     <!-- Navigation -->
                     <ul class="navbar-nav">
-                        <li class="nav-item"> <a href="@Url.Action("pantallageneral","Auto")" class="nav-link">Autos</a> </li>
+                        <li class="nav-item"> <a href="@Url.Action("Index","Auto")" class="nav-link">Autos</a> </li>
                         <li class="nav-item"> <a href="@Url.Action("grupocoche","Grupo")" class="nav-link">Grupos</a> </li>
                         <li class="nav-item"> <a href="@Url.Action("Index","Alarma")" class="nav-link">Alarma</a> </li>
                     </ul> <!-- Divider -->
@@ -70,12 +70,21 @@
                             <div class="col-sm-6 col-12 mb-4 mb-sm-0">
                                 <!-- Title -->
                                 <h1 class="h2 mb-0 ls-tight">CARMAPS</h1>
-                            </div> <!-- Actions -->
+                            </div>
+                            <div class="col-sm-6 col-12 mb-4 mb-sm-0">
+                                <button id="obtener" margin-top="10px" class="btn btn-warning">
+                                    Obtener mi localización
+                                </button>
+                                <button id="iniciarRuta" style="visibility:hidden" margin-top="10px" class="btn btn-warning">
+                                    Iniciar ruta
+                                </button>
+                            </div>
+                            <!-- Actions -->
                         </div> <!-- Nav -->
                         <ul class="nav nav-tabs mt-4 overflow-x border-0">
-                            <li class="nav-item "> @Html.ActionLink("Coches","pantallageneral","Auto",null, new {@class="nav-link active"})</li>
-                            <li class="nav-item"> @Html.ActionLink("Nuevo Coche","nuevocoche","Auto",null, new {@class="nav-link active"})</li>
-                            <li class="nav-item"> @Html.ActionLink("Borrar Coche","borrarcoche","Auto",null, new {@class="nav-link active"})</li>
+                            <li class="nav-item"> @Html.ActionLink("Alarmas","Index","Alarma",null, new {@class="nav-link"})</li>
+                            <li class="nav-item"> @Html.ActionLink("Nueva Alarma","NewAlarma","Alarma",null, new {@class="nav-link"})</li>
+                            <li class="nav-item"> @Html.ActionLink("Borrar Alarma","DeleteAuto","Alarma",null, new {@class="nav-link"})</li>
                         </ul>
                     </div>
                 </div>
@@ -89,33 +98,12 @@
     </main>
 </div>
 
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2022 - CapaVista - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-    </div>
-</footer>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
-<script>
-    // Escuchamos el evento "alarm" emitido desde el servidor
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/alarmHub")
-        .build();
-
-
-    connection.start().then(function () {
-        console.log("Alarma sonando");
-    });
-
-    connection.on("alarm", () => {
-        // Mostramos la ventana emergente
-        alert("¡Hora de despertar!");
-    });
-
-    connection.start();
-</script>
+<script src="~/js/localizacion.js"></script>
+<script src="~/js/alarma.js"></script>
 @await RenderSectionAsync("Scripts", required: false)
 
 </html>

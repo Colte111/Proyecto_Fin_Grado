@@ -1,5 +1,6 @@
 //1.- PRIMERO =================================================================
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
 using WebApplication1;
 using WebApplication1.Controllers;
 
@@ -17,6 +18,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.LoginPath = "/Acceso/Index";
         option.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         option.AccessDeniedPath = "/Home/Privacy";
+        option.Events.OnRedirectToLogin = context =>
+        {
+            // Almacena el mensaje de error en las propiedades de autenticación
+            context.Properties.Items["Error"] = "Debe iniciar sesión para acceder a esta página.";
+
+            context.Response.Redirect(context.RedirectUri);
+
+            return Task.CompletedTask;
+        };
     });
 
 //3.- CONFIGURACIÓN PARA USAR SESIONES

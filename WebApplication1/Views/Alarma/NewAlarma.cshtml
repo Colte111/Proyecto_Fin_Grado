@@ -1,0 +1,43 @@
+﻿@using Modelos
+@model ALARMA
+@{
+    ViewBag.Title = "www.compilemode.com";
+    Layout = "/Views/Shared/_LayoutAlarma.cshtml";
+}
+
+@using (Html.BeginForm("NewAlarma", "Alarma", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="padding-left:100px">
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.fecha, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fecha, new { htmlAttributes = new { @class = "form-control", @style = "width:30%" } })
+                @Html.ValidationMessageFor(model => model.fecha, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br />
+
+            @if(ViewBag.successAlarma != null)
+            {
+                <p class="alert-success">@ViewBag.successAlarma</p>
+            }
+           <br>
+        <br>
+        <button class="btn d-inline-flex btn-sm btn-primary mx-1">
+            <span class=" pe-2">
+                <i class="bi bi-plus"></i>
+            </span>
+            <span>Crear</span>
+        </button>
+
+    </div>
+}
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.min.js"></script>
+<script src="~/js/localizacion.js"></script>
+<script src="~/js/alarma.js"></script>
+
