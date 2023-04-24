@@ -47,16 +47,15 @@ namespace CapaAccesoBBDD
             comando.CommandText = "ELIMINARCOCHE";
             comando.CommandType = CommandType.StoredProcedure;
             comando.Parameters.AddWithValue("@idauto", id);
-
             comando.ExecuteNonQuery();
             comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
-        public void latitudCOCHE(string lat, string long1, int id, int idAUTO)
+        public void UpdateUbicacionCOCHE(string lat, string long1, int id, int idAUTO)
         {
             SqlCommand comando = new SqlCommand();
             comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "update AUTOMOVIL set lat1='" + lat + "' , long='" + long1 + "' where AUTOMOVIL.USUARIOid=" + id + " AND AUTOMOVIL.AUTOMOVILid=" + idAUTO + "";
+            comando.CommandText = "update AUTOMOVIL set Latitud='" + lat + "' , Longitud='" + long1 + "' where AUTOMOVIL.USUARIOid=" + id + " AND AUTOMOVIL.AUTOMOVILid=" + idAUTO + "";
             comando.CommandTimeout = 4;
             comando.CommandType = CommandType.Text;
             comando.ExecuteNonQuery();

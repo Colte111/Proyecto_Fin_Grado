@@ -12,8 +12,8 @@ namespace Modelos
         public string Matricula { get; set; }
         public string Modelo { get; set; }
         public string Consumible { get; set; }
-        public string lat { get; set; }
-        public string long1 { get; set; }
+        public string Latitud { get; set; }
+        public string Longitud { get; set; }
 
 
         public AUTOMOVIL()
@@ -25,8 +25,8 @@ namespace Modelos
             AUTOMOVILid = (int)dr["AUTOMOVILid"];
             Marca = (string)dr["Marca"];
             Matricula = (string)dr["Matricula"];
-            lat = (string)dr["lat1"];
-            long1 = (string)dr["long"];
+            Latitud = (string)dr["Latitud"];
+            Longitud = (string)dr["Longitud"];
             //Modelo = (string)dr["Modelo"];
         }
     }

@@ -7,7 +7,7 @@ namespace Modelos
     public class ALARMA
     {
         public int ALARMAid { get; set; }
-        public DateTime fecha { get; set; }
+        public DateTime Fecha { get; set; }
 
         public ALARMA()
         {
@@ -15,13 +15,7 @@ namespace Modelos
         }
         public ALARMA(DataRow row)
         {
-            fecha = (DateTime)row["FECHA"];
+            Fecha = (DateTime)row["Fecha"];
         }
-
-        public DateTime GetAlarma()
-        {
-            return fecha;
-        }
-
     }
 }

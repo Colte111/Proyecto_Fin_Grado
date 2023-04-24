@@ -12,7 +12,6 @@ function mostrar(posicion) {
     var datos = '';
     datos += 'Latitud: ' + posicion.coords.latitude + '<br>';
     datos += 'Longitud: ' + posicion.coords.longitude + '<br>';
-    //ubicacion.innerHTML=datos;
     guardarposicion(posicion);
 }
 
@@ -22,7 +21,7 @@ function guardarposicion(posicion) {
         lat: 1,
         long1: 0
     };
-    var latitud = posicion.coords.latitude; //retrieve username from textbox with id 'username'
+    var latitud = posicion.coords.latitude; 
     var logitud = posicion.coords.longitude;
 
     $.ajax({

@@ -21,10 +21,6 @@ namespace carmaps.Controllers
         private CD_Automovil CD_Auto = new CD_Automovil();
         public IHubContext<AlarmHub> _alarmHubContext;
 
-        public AutoController(IHubContext<AlarmHub> alarmHubContext)
-        {
-            _alarmHubContext = alarmHubContext;
-        }
         public int ID()
         {
             var user = HttpContext.User;
@@ -39,7 +35,7 @@ namespace carmaps.Controllers
             var _alarma = new ALARMA();
             _alarma = cd_alarma._primeraAlarma(ID());
 
-            return _alarma.fecha;
+            return _alarma.Fecha;
         }
         public async Task StartAlarmAsync(DateTime alarmTime)
         {
@@ -61,6 +57,8 @@ namespace carmaps.Controllers
 
         public ActionResult Index()
         {
+            var cts = new CancellationTokenSource();
+            var token = cts.Token;
             StartAlarmAsync(ALARMA());
             List<AUTOMOVIL> _coche = new List<AUTOMOVIL>();
             _coche = CD_Auto.MostrarCOCHE(ID());
@@ -70,8 +68,11 @@ namespace carmaps.Controllers
         [HttpPost]
         public JsonResult GetAuthToken(string lati, string longi)
         {
+            //Obtengo la ubicacion desde js y la guardo en la session para guardarlas en la bbdd posteriormente
             HttpContext.Session.SetString("lati", lati);
             HttpContext.Session.SetString("longi", longi);
+
+            //Si todo ha ido bien,saldra un alert notificandolo
             return Json(new { Msg = "Ubicacion actualizada!" });
         }
 
@@ -84,6 +85,7 @@ namespace carmaps.Controllers
 
             try
             {
+                //Llamo a la funcion para guardar la ubicacion en la BBDD
                 CD_Auto.updatecoords(lati, longi, ID(), idAUTO);
             }
             catch
@@ -100,11 +102,11 @@ namespace carmaps.Controllers
         }
 
         [HttpPost]
-        public ActionResult NewAuto(AUTOMOVIL aUTOMOVIL)
+        public ActionResult NewAuto(AUTOMOVIL automovil)
         {
             try
             {
-                CD_Auto.InsertarCOCHE(aUTOMOVIL.Matricula, aUTOMOVIL.Marca,ID());
+                CD_Auto.InsertarCOCHE(automovil.Matricula, automovil.Marca,ID());
                 return RedirectToAction("Index");
             }
             catch
@@ -116,6 +118,8 @@ namespace carmaps.Controllers
         public ActionResult DeleteAuto()
         {
             List<AUTOMOVIL> _coche = new List<AUTOMOVIL>();
+
+            //Funcion para mostrar los vehiculos del usuario
             _coche = CD_Auto.MostrarCOCHE(ID());
 
             return View(_coche);

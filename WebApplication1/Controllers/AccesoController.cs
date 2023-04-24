@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebApplication1.Models;
 using CapaDominio;
 
 //1.- REFERENCES AUTHENTICATION COOKIE

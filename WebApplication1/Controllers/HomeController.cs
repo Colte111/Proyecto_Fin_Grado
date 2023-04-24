@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using WebApplication1.Models;
-
 
 using Microsoft.AspNetCore.Authorization;
 using CapaDominio;
@@ -39,7 +37,7 @@ namespace WebApplication1.Controllers
             var _alarma = new ALARMA();
             _alarma = cd_alarma._primeraAlarma(ID());
 
-            return _alarma.fecha;
+            return _alarma.Fecha;
         }
 
         public async Task StartAlarmAsync(DateTime alarmTime)
@@ -63,12 +61,6 @@ namespace WebApplication1.Controllers
         {
             StartAlarmAsync(ALARMA());
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

@@ -14,7 +14,7 @@ namespace capaDominio
         private CAD_Automovil objetoCD = new CAD_Automovil();
         public void updatecoords(string lat, string long1, int id, int idauto)
         {
-            objetoCD.latitudCOCHE(lat, long1, id, idauto);
+            objetoCD.UpdateUbicacionCOCHE(lat, long1, id, idauto);
         }
 
         public void EliminarCOCHE(int id)

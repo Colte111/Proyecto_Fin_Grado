@@ -16,13 +16,15 @@ namespace carmaps.Controllers
 
     public class AlarmaController : Controller
     {
-        CD_Alarma cd_alarma = new CD_Alarma();
-        USUARIO user = new USUARIO();
+        public CD_Alarma cd_alarma = new CD_Alarma();
+        public USUARIO user = new USUARIO();
+        public AutoController autoController = new AutoController();
         public IHubContext<AlarmHub> _alarmHubContext;
-        
         
 
         #region FUNCIONES_ALARMA
+
+        //Funcion para obtener el ID del usuario almacenado en el HttpContext
         public int ID()
         {
             var user = HttpContext.User;
@@ -32,29 +34,16 @@ namespace carmaps.Controllers
 
             return id;
         }
+
+        //Funcion para obtener la fecha de la alarma **Siempre la fecha mas cercana a la actual**
         public DateTime ALARMA()
         {
             var _alarma = new ALARMA();
             _alarma = cd_alarma._primeraAlarma(ID());
 
-            return _alarma.fecha;
+            return _alarma.Fecha;
         }
-        public async Task StartAlarmAsync(DateTime alarmTime,CancellationTokenSource cts)
-        {
-            //Compruebo que el valor del DateTime es mayor a now **EXPLICAR**
-            if (alarmTime > DateTime.Now)
-            {
-                // Obtener la hora actual y calcular la cantidad de segundos hasta que suene la alarma
-                var currentTime = DateTime.Now;
-                var timeToAlarm = (int)(alarmTime - currentTime).TotalSeconds;
-
-                // Esperar hasta que sea hora de sonar la alarma
-                await Task.Delay(timeToAlarm * 1000);
-
-                // Enviar el mensaje a través del concentrador de SignalR
-                await _alarmHubContext.Clients.All.SendAsync("alarm");
-            }
-        }
+        
         #endregion
 
         #region FUNCIONES_INICIAR_RUTA
@@ -76,16 +65,23 @@ namespace carmaps.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> NewAlarma(ALARMA newAlarm)
+        public IActionResult NewAlarma(ALARMA newAlarm)
         {
             var cts = new CancellationTokenSource();
 
             try
             {
-                cts.Cancel();
-                cd_alarma._insertarAlarma(ID(), newAlarm.fecha);
-                await StartAlarmAsync(ALARMA(),cts);
-                ViewBag.successAlarma = "Alarma Programada";
+                if(newAlarm.Fecha < ALARMA())
+                {
+                    cd_alarma._insertarAlarma(ID(), newAlarm.Fecha);
+                    autoController.StartAlarmAsync(newAlarm.Fecha);
+                }
+                else
+                {
+                    cts.Cancel();
+                    cd_alarma._insertarAlarma(ID(), newAlarm.Fecha);
+                    ViewBag.successAlarma = "Alarma Programada";
+                }
 
                 return View();
             }
