@@ -10,6 +10,11 @@ namespace Modelos
         public string Apellidos { get; set; }
         public string Correo { get; set; }
         public string Constraseña { get; set; }
+
+        [Display(Name = "DD/MM/YYYY")]
+        [Required(ErrorMessage = "Este campo es requerido.")]
+        [RegularExpression(@"^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$",
+            ErrorMessage = "Formato incorrecto")]
         public string FechaNacimiento { get; set; }
         public string Genero { get; set; }
 

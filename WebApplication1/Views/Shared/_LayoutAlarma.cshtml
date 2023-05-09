@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
-@{ 
+@{
     string nombre = (string)ViewContext.HttpContext.Session.GetString("username");
+    int AUTOMVILid = (int)ViewContext.HttpContext.Session.GetInt32("AUTOMOVILid");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -82,9 +83,8 @@
                             <!-- Actions -->
                         </div> <!-- Nav -->
                         <ul class="nav nav-tabs mt-4 overflow-x border-0">
-                            <li class="nav-item"> @Html.ActionLink("Alarmas","Index","Alarma",null, new {@class="nav-link"})</li>
-                            <li class="nav-item"> @Html.ActionLink("Nueva Alarma","NewAlarma","Alarma",null, new {@class="nav-link"})</li>
-                            <li class="nav-item"> @Html.ActionLink("Borrar Alarma","DeleteAuto","Alarma",null, new {@class="nav-link"})</li>
+                            <li class="nav-item"> <a href="/Alarma/Index?AUTOMOVILid=@AUTOMVILid" class="nav-link">Alarmas</a> </li>
+                            <li class="nav-item"> <a href="/Alarma/NewAlarma?AUTOMOVILid=@AUTOMVILid" class="nav-link">Nueva Alarma</a></li>
                         </ul>
                     </div>
                 </div>

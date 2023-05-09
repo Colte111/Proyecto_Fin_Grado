@@ -13,7 +13,7 @@ namespace CapaDominio
     {
         private CAD_Alarma cad_alarma = new CAD_Alarma();
 
-        public List<ALARMA> _obtenerAlarma(int id)
+        public List<ALARMA> _obtenerListAlarma(int id)
         {
             List<ALARMA> _alarma = new List<ALARMA>();
             DataTable dt = new DataTable();
@@ -43,9 +43,17 @@ namespace CapaDominio
             return _alarma;
         }
 
-        public void _insertarAlarma(int id,DateTime fecha)
+        public void _insertarAlarma(int AUTOMOVILid,DateTime fecha)
         {
-            cad_alarma.InsertarAlarma(id,fecha);
+            cad_alarma.InsertarAlarma(AUTOMOVILid, fecha);
+        }
+        public void _eliminarAlarma(int ALARMAid)
+        {
+            cad_alarma.EliminarAlarma(ALARMAid);
+        }
+        public void _actualizarAlarma(int ALARMAid,DateTime fecha)
+        {
+            cad_alarma.ActualizarAlarma(ALARMAid, fecha);
         }
     }
 }

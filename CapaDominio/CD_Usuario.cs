@@ -21,6 +21,7 @@ namespace CapaDominio
             }
             return list;
         }
+
         public USUARIO ValidarUsuario(string _correo, string _clave)
         {
             USUARIO user = new USUARIO();

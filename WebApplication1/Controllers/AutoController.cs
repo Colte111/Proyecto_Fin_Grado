@@ -20,6 +20,12 @@ namespace carmaps.Controllers
         CD_Alarma cd_alarma = new CD_Alarma();
         private CD_Automovil CD_Auto = new CD_Automovil();
         public IHubContext<AlarmHub> _alarmHubContext;
+        public CancellationTokenSource cts = new CancellationTokenSource();
+
+        public AutoController(IHubContext<AlarmHub> alarmHubContext)
+        {
+            _alarmHubContext = alarmHubContext;
+        }
 
         public int ID()
         {
@@ -37,31 +43,34 @@ namespace carmaps.Controllers
 
             return _alarma.Fecha;
         }
-        public async Task StartAlarmAsync(DateTime alarmTime)
+        public async Task StartAlarmAsync(DateTime alarmTime,CancellationToken cancellationToken)
         {
-            //Compruebo que el valor del DateTime es mayor a now **EXPLICAR**
-            if(alarmTime > DateTime.Now)
+            //Comparo con datetime.now porque aunque no haya recogido ninguna fecha de la BBDD
+            // un DateTime nunca puede ser null, entonces siempre devolvera un valor de fecha 01/01/0001
+            if (alarmTime > DateTime.Now)
             {
-                // Obtener la hora actual y calcular la cantidad de segundos hasta que suene la alarma
-                var currentTime = DateTime.Now;
-                var timeToAlarm = (int)(alarmTime - currentTime).TotalSeconds;
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    // Obtener la hora actual y calcular la cantidad de segundos hasta que suene la alarma
+                    var currentTime = DateTime.Now;
+                    var timeToAlarm = (int)(alarmTime - currentTime).TotalSeconds;
 
-                // Esperar hasta que sea hora de sonar la alarma
-                await Task.Delay(timeToAlarm * 1000);
+                    // Esperar hasta que sea hora de sonar la alarma
+                    await Task.Delay(timeToAlarm * 1000);
 
-                // Enviar el mensaje a través del concentrador de SignalR
-                await _alarmHubContext.Clients.All.SendAsync("alarm");
+                    // Enviar el mensaje a través del concentrador de SignalR
+                    await _alarmHubContext.Clients.All.SendAsync("alarm");
+                }
             }
-
         }
 
         public ActionResult Index()
         {
-            var cts = new CancellationTokenSource();
-            var token = cts.Token;
-            StartAlarmAsync(ALARMA());
             List<AUTOMOVIL> _coche = new List<AUTOMOVIL>();
+    
+            StartAlarmAsync(ALARMA(), cts.Token);
             _coche = CD_Auto.MostrarCOCHE(ID());
+
             return View((_coche));
         }
 
@@ -73,7 +82,7 @@ namespace carmaps.Controllers
             HttpContext.Session.SetString("longi", longi);
 
             //Si todo ha ido bien,saldra un alert notificandolo
-            return Json(new { Msg = "Ubicacion actualizada!" });
+            return Json(new { Msg = "Ubicacion actualizada! Asignela a su vehículo" });
         }
 
         [HttpPost]

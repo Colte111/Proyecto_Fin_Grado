@@ -123,10 +123,11 @@ body {
 }
 
 #register {
-    margin-top:-1px;
-    font-size: 6vmax;
+    margin-top: -1px;
+    font-size: 60px;
     line-height: 0;
-    color:black;
+    color: black;
+    margin-left: -55px
 }
 /*.box-form .verPassword button {
     background-image: bi bi-eye;

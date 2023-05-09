@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,6 +12,8 @@ namespace CapaAccesoBBDD
     public class CAD_Automovil
     {
         private CAD_Conexion conexion = new CAD_Conexion();
+        SqlDataReader leer;
+        SqlCommand comando = new SqlCommand();
 
         public DataTable MostrarCOCHE(int id)
         {

@@ -14,6 +14,7 @@ namespace Modelos
         public string Consumible { get; set; }
         public string Latitud { get; set; }
         public string Longitud { get; set; }
+        public DateTime Alarma { get; set; }
 
 
         public AUTOMOVIL()
@@ -27,7 +28,6 @@ namespace Modelos
             Matricula = (string)dr["Matricula"];
             Latitud = (string)dr["Latitud"];
             Longitud = (string)dr["Longitud"];
-            //Modelo = (string)dr["Modelo"];
         }
     }
 }

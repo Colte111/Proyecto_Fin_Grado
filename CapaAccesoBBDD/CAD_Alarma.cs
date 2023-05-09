@@ -13,14 +13,14 @@ namespace CapaAccesoBBDD
         private CAD_Conexion conexion = new CAD_Conexion();
         private SqlDataReader leer;
         private SqlCommand comando = new SqlCommand();
-        public void InsertarAlarma(int id, DateTime fecha)
+        public void InsertarAlarma(int AUTOMOVILid, DateTime fecha)
         {
             comando.Connection = conexion.AbrirConexion();
             comando.CommandText = "INSERTAR_ALARMA";
             comando.CommandType = CommandType.StoredProcedure;
 
             comando.Parameters.AddWithValue("@fecha", fecha);
-            comando.Parameters.AddWithValue("@id", id);
+            comando.Parameters.AddWithValue("@AUTOMOVILid", AUTOMOVILid);
 
             comando.ExecuteNonQuery();
             comando.Parameters.Clear();
@@ -31,8 +31,12 @@ namespace CapaAccesoBBDD
         {
             DataTable tabla = new DataTable();
             comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "Select a.FECHA,concat(u.Nombre,' ',u.Apellidos) as Nombre from ALARMA a,USUARIO u WHERE " +
-                "u.USUARIOid=" + id + " and a.USUARIOid=u.USUARIOid and a.FECHA > GETDATE()";
+            comando.CommandText =
+                " SELECT a.ALARMAid,a.AUTOMOVILid,a.FECHA " +
+                " FROM ALARMA a, AUTOMOVIL au " +
+                " WHERE au.AUTOMOVILid = " + id +
+                " and au.AUTOMOVILid = a.AUTOMOVILid " +
+                " and a.FECHA > GETDATE() ";
 
             comando.CommandTimeout = 2;
             comando.CommandType = CommandType.Text;
@@ -47,7 +51,11 @@ namespace CapaAccesoBBDD
         {
             DataTable tabla = new DataTable();
             comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "SELECT TOP(1) Fecha FROM ALARMA WHERE Fecha >= GETDATE() and USUARIOid ="+id+" ORDER BY Fecha";
+            comando.CommandText = "SELECT TOP(1) a.Fecha,a.AUTOMOVILid,a.ALARMAid "+ 
+                                    " FROM ALARMA a,AUTOMOVIL au "+
+                                    " WHERE a.Fecha >= GETDATE() "+
+                                    " and au.USUARIOid = "+id+
+                                    " and au.AUTOMOVILid = a.AUTOMOVILid ";
             
             comando.CommandTimeout = 2;
             comando.CommandType = CommandType.Text;
@@ -57,6 +65,29 @@ namespace CapaAccesoBBDD
             conexion.CerrarConexion();
 
             return tabla;
+        }
+        public void EliminarAlarma(int ALARMAid)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+            comando.CommandText = "ELIMINARALARMA";
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.Parameters.AddWithValue("@ALARMAid", ALARMAid);
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
+        }
+        public void ActualizarAlarma(int ALARMAid,DateTime fecha)
+        {
+            SqlCommand comando = new SqlCommand();
+            comando.Connection = conexion.AbrirConexion();
+            comando.CommandText = "ACTUALIZARALARMA";
+            comando.CommandType = CommandType.StoredProcedure;
+            comando.Parameters.AddWithValue("@ALARMAid", ALARMAid);
+            comando.Parameters.AddWithValue("@fecha", fecha);
+            comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            conexion.CerrarConexion();
         }
     }
 }

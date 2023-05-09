@@ -1,0 +1,53 @@
+﻿@using Modelos
+@model USUARIO
+@{
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+
+    
+    <div class="right">
+
+        <p id="register" style="margin-left:-55px;font-size:60px"><b>Registrate</b></p>
+
+        @using (Html.BeginForm("Register", "Acceso", FormMethod.Post))
+        {
+            @Html.TextBoxFor(x => x.Correo, new { @placeholder = Html.DisplayNameFor(x => x.Correo) })
+            @Html.ValidationMessageFor(x => x.Correo, null, new { @class = "text-danger" })
+            <br />
+       
+            @Html.PasswordFor(x => x.Constraseña, new { @placeholder = Html.DisplayNameFor(x => x.Constraseña) })
+
+            @Html.ValidationMessageFor(x => x.Constraseña, null, new { @class = "text-danger" })
+            <br />
+            @Html.TextBoxFor(x => x.Nombre, new { @placeholder=Html.DisplayNameFor(x => x.Nombre)})
+            <br />
+            <br />
+            @Html.TextBoxFor(x => x.Apellidos, new { @placeholder = Html.DisplayNameFor(x => x.Apellidos) })
+            <br />
+            <br />
+            @Html.TextBoxFor(x => x.FechaNacimiento, new { @placeholder = Html.DisplayNameFor(x => x.FechaNacimiento) })
+            <br />
+            <br />
+        
+            @Html.DropDownListFor(m => m.Genero,new List<SelectListItem> {
+                new SelectListItem { Value = "HOMBRE" , Text = "HOMBRE" },
+                new SelectListItem { Value = "MUJER" , Text = "MUJER" },
+                new SelectListItem { Value = "SIN GENERO" , Text = "SIN GENERO" },
+                new SelectListItem { Value = "OTRO" , Text = "OTRO" }
+            })
+           
+            <br />
+            <br />
+            <br>
+           
+            <button id="Login" type="submit">
+               Iniciar sesión
+            </button>
+        
+        }
+
+            <div class="etc-login-form">
+                <p>Ya tienes cuenta? @Html.ActionLink("Iniciar Sesion", "login2")</p>
+            </div>
+
+    </div>

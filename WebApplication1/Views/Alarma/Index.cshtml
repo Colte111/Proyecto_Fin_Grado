@@ -15,10 +15,33 @@
                 <i class="bi bi-alarm">
                     @item.Fecha
                 </i>
+                @using (Html.BeginForm("DeleteAlarma", "Alarma", new { ALARMAid = item.ALARMAid }, FormMethod.Post))
+                {
+                    <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                }
+                <button  type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                    <a href="@Url.Action("UpdateAlarma","Alarma")" style="text-decoration:none; color:white">
+                        Actualizar Alarma
+                    </a>
+                </button>
             </div>
             <br />
              
         }
+        
+        @if (ViewBag.AccesoNewAlarm != null)
+        {
+            <div class="alert alert-warning">@ViewBag.AccesoNewAlarm</div>
+        }
+        @if (ViewBag.SuccessActualizar != null)
+        {
+            <div class="alert alert-warning">@ViewBag.SuccessActualizar</div>
+        }
+        
+        
+
         <br />
     </div>
 </div>
