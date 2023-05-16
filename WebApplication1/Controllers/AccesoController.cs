@@ -50,7 +50,7 @@ namespace WebApplication1.Controllers
                 #region AUTENTICACTION
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, usuario.Nombre),
+                    new Claim("Nombre", usuario.Nombre),
                     new Claim("Correo", usuario.Correo),
                     new Claim("id",usuario.USUARIOid.ToString())
                 };
@@ -61,11 +61,6 @@ namespace WebApplication1.Controllers
 
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
                 #endregion
-
-                //Guardo el id en una sesion
-                
-                HttpContext.Session.SetInt32("id", usuario.USUARIOid);
-
                 
 
                 return RedirectToAction("Index", "Auto");

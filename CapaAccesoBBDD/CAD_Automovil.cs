@@ -65,5 +65,20 @@ namespace CapaAccesoBBDD
             comando.Parameters.Clear();
             conexion.CerrarConexion();
         }
+
+        public DataTable ObtenerUbicacion(int AUTOMOVILid)
+        {
+            DataTable tabla = new DataTable();
+            comando.Connection = conexion.AbrirConexion();
+            comando.CommandText = "SELECT * FROM AUTOMOVIL WHERE AUTOMOVILid = " + AUTOMOVILid + "";
+            comando.CommandTimeout = 2;
+            comando.CommandType = CommandType.Text;
+
+            leer = comando.ExecuteReader();
+            tabla.Load(leer);
+            conexion.CerrarConexion();
+
+            return tabla;
+        }
     }
 }

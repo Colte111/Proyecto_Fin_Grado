@@ -43,6 +43,13 @@ namespace carmaps.Controllers
 
             return _alarma.Fecha;
         }
+        public int AUTOMOVILid_alarma()
+        {
+            var _alarma = new ALARMA();
+            _alarma = cd_alarma._primeraAlarma(ID());
+
+            return _alarma.AUTOMOVILid;
+        }
         public async Task StartAlarmAsync(DateTime alarmTime,CancellationToken cancellationToken)
         {
             //Comparo con datetime.now porque aunque no haya recogido ninguna fecha de la BBDD
@@ -67,8 +74,18 @@ namespace carmaps.Controllers
         public ActionResult Index()
         {
             List<AUTOMOVIL> _coche = new List<AUTOMOVIL>();
-    
+            
+            //Inicio la funcion de alarma
             StartAlarmAsync(ALARMA(), cts.Token);
+
+            //Obtengo las coordenadas del coche con la alarma más próxima a la fecha actual y las guardo en una session
+            AUTOMOVIL coordenadas = new AUTOMOVIL();
+            coordenadas = CD_Auto._obtenerUbicacion(AUTOMOVILid_alarma());
+            HttpContext.Session.SetString("LatitudCoche", coordenadas.Latitud);
+            HttpContext.Session.SetString("LongitudCoche", coordenadas.Longitud);
+            
+
+            //Obtengo los datos de los coches del usuario para mostrarlos
             _coche = CD_Auto.MostrarCOCHE(ID());
 
             return View((_coche));
@@ -78,8 +95,8 @@ namespace carmaps.Controllers
         public JsonResult GetAuthToken(string lati, string longi)
         {
             //Obtengo la ubicacion desde js y la guardo en la session para guardarlas en la bbdd posteriormente
-            HttpContext.Session.SetString("lati", lati);
-            HttpContext.Session.SetString("longi", longi);
+            HttpContext.Session.SetString("Latitud_actualizada", lati);
+            HttpContext.Session.SetString("Longitud_actualizada", longi);
 
             //Si todo ha ido bien,saldra un alert notificandolo
             return Json(new { Msg = "Ubicacion actualizada! Asignela a su vehículo" });
@@ -89,8 +106,8 @@ namespace carmaps.Controllers
         public ActionResult Index(int idAUTO)
         {
             //https://www.google.com/maps/dir/'@latiActual,-@longiActual'/''/@latiCoche,-@longiCoche,11z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x0:0xc8c36b17074ece53!2m2!1d-0.5068824!2d38.5469467!1m5!1m1!1s0xd623662d742628d:0x402af6ed721d5c0!2m2!1d-0.4909626!2d38.3460627!3e0
-            string lati = (string)HttpContext.Session.GetString("lati");
-            string longi = (string)HttpContext.Session.GetString("longi");
+            string lati = (string)HttpContext.Session.GetString("Latitud_actualizada");
+            string longi = (string)HttpContext.Session.GetString("Longitud_actualizada");
 
             try
             {

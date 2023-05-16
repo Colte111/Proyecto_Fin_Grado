@@ -1,9 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Http
+@using System.Security.Claims;
 @{
-    string nombre = (string)ViewContext.HttpContext.Session.GetString("username");
-    string latitud = (string)ViewContext.HttpContext.Session.GetString("lati");
-    string longitud = (string)ViewContext.HttpContext.Session.GetString("longi");
+    string latitud = (string)ViewContext.HttpContext.Session.GetString("LatitudCoche");
+    string longitud = (string)ViewContext.HttpContext.Session.GetString("LongitudCoche");
+    var user = ViewContext.HttpContext.User;
+    var nombre = user.FindFirstValue("Nombre");
+    string ruta = "https://www.google.com/maps/dir//" + @latitud + "," + @longitud + "/";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -77,8 +81,10 @@
                                     <button id="obtener" margin-top="10px" class="btn btn-warning">
                                         Obtener mi localización
                                     </button>
-                                    <button href="https://www.google.com/maps/dir//'@latitud,-@longitud'/" id="iniciarRuta" style="visibility:hidden" onclick="ocultar()" margin-top="10px" class="btn btn-warning">
-                                        Iniciar ruta
+                                    <button id="iniciarRuta" style="visibility:hidden" margin-top="10px" class="btn btn-warning">
+                                        <a href="@ruta" style="text-decoration:none;color:white">
+                                            Iniciar Ruta
+                                        </a>
                                     </button>
                                 </div><!-- Actions -->
                             </div> <!-- Nav -->

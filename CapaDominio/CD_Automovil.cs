@@ -34,6 +34,20 @@ namespace capaDominio
             return coche;
         }
 
+        public AUTOMOVIL _obtenerUbicacion(int AUTOMOVILid)
+        {
+            DataTable tabla = new DataTable();
+            AUTOMOVIL auto = new AUTOMOVIL();
+
+            tabla = objetoCD.ObtenerUbicacion(AUTOMOVILid);
+            foreach(DataRow row in tabla.Rows)
+            {
+                auto = new AUTOMOVIL(row);
+            }
+
+            return auto;
+        }
+
         public void InsertarCOCHE(string matricula, string marca, int usuarioid)
         {
             objetoCD.InsertarCOCHE(matricula, marca, usuarioid);

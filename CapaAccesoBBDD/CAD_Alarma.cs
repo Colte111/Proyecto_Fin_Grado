@@ -51,11 +51,12 @@ namespace CapaAccesoBBDD
         {
             DataTable tabla = new DataTable();
             comando.Connection = conexion.AbrirConexion();
-            comando.CommandText = "SELECT TOP(1) a.Fecha,a.AUTOMOVILid,a.ALARMAid "+ 
-                                    " FROM ALARMA a,AUTOMOVIL au "+
-                                    " WHERE a.Fecha >= GETDATE() "+
-                                    " and au.USUARIOid = "+id+
-                                    " and au.AUTOMOVILid = a.AUTOMOVILid ";
+            comando.CommandText = "SELECT TOP(1) a.Fecha,a.AUTOMOVILid,a.ALARMAid " +
+                                    " FROM ALARMA a,AUTOMOVIL au " +
+                                    " WHERE a.Fecha >= GETDATE() " +
+                                    " and au.USUARIOid = " + id +
+                                    " and au.AUTOMOVILid = a.AUTOMOVILid " +
+                                    " ORDER BY a.Fecha ASC";
             
             comando.CommandTimeout = 2;
             comando.CommandType = CommandType.Text;

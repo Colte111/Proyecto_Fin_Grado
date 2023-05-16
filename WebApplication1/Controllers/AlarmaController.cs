@@ -100,6 +100,14 @@ namespace carmaps.Controllers
             {
                 ViewBag.SuccessActualizar = TempData["SuccessActualizar"].ToString();
             }
+            if (TempData.ContainsKey("NewAlarma"))
+            {
+                ViewBag.NewAlarma = TempData["NewAlarma"].ToString();
+            }
+            if (TempData.ContainsKey("NewAlarmaError"))
+            {
+                ViewBag.NewAlarmaError = TempData["NewAlarmaError"].ToString();
+            }
             #endregion
 
             return View(_data);
@@ -146,12 +154,18 @@ namespace carmaps.Controllers
                 {
                     cd_alarma._insertarAlarma(AUTOMOVILid, newAlarm.Fecha);
                 }
-                ViewBag.successAlarma = "Alarma Programada";
-                return View();
+
+                TempData["NewAlarma"] = "Alarma guardada";
+
+                return RedirectToAction
+                (
+                    "Index",
+                    new { AUTOMOVILid = (int)HttpContext.Session.GetInt32("AUTOMOVILid") }
+                );
             }
             catch 
             {
-                ViewBag.errorAlarma = "Error, pruebe de nuevo";
+                TempData["NewAlarmaError"] = "Error al guardar la alarma";
                 return View();
             }           
         }

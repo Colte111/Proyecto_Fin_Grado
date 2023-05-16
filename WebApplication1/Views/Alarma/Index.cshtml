@@ -10,25 +10,25 @@
         <br />
         @foreach (var item in Model)
         {
-             @*Esta comprobacion se tiene que hacer en la consulta ¡CAMBIAR!*@
             <div class="col">
                 <i class="bi bi-alarm">
                     @item.Fecha
                 </i>
+            </div>
+            <div class="col">
                 @using (Html.BeginForm("DeleteAlarma", "Alarma", new { ALARMAid = item.ALARMAid }, FormMethod.Post))
                 {
-                    <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                    <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary">
                         <i class="bi bi-trash"></i>
                     </button>
                 }
-                <button  type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary mx-1">
+                <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary">
                     <a href="@Url.Action("UpdateAlarma","Alarma")" style="text-decoration:none; color:white">
                         Actualizar Alarma
                     </a>
                 </button>
             </div>
             <br />
-             
         }
         
         @if (ViewBag.AccesoNewAlarm != null)
@@ -37,7 +37,15 @@
         }
         @if (ViewBag.SuccessActualizar != null)
         {
-            <div class="alert alert-warning">@ViewBag.SuccessActualizar</div>
+            <div class="alert alert-success">@ViewBag.SuccessActualizar</div>
+        }
+        @if (ViewBag.NewAlarma != null)
+        {
+            <div class="alert alert-success">@ViewBag.NewAlarma</div>
+        }
+        @if (ViewBag.NewAlarmaError != null)
+        {
+            <div class="alert alert-success">@ViewBag.NewAlarmaError</div>
         }
         
         
