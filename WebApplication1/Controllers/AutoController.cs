@@ -27,6 +27,7 @@ namespace carmaps.Controllers
             _alarmHubContext = alarmHubContext;
         }
 
+        #region FUNCIONES ALARMA
         public int ID()
         {
             var user = HttpContext.User;
@@ -70,23 +71,38 @@ namespace carmaps.Controllers
                 }
             }
         }
+        #endregion
 
         public ActionResult Index()
         {
             List<AUTOMOVIL> _coche = new List<AUTOMOVIL>();
-            
-            //Inicio la funcion de alarma
-            StartAlarmAsync(ALARMA(), cts.Token);
+            ALARMA _alarma = new ALARMA();
 
-            //Obtengo las coordenadas del coche con la alarma más próxima a la fecha actual y las guardo en una session
-            AUTOMOVIL coordenadas = new AUTOMOVIL();
-            coordenadas = CD_Auto._obtenerUbicacion(AUTOMOVILid_alarma());
-            HttpContext.Session.SetString("LatitudCoche", coordenadas.Latitud);
-            HttpContext.Session.SetString("LongitudCoche", coordenadas.Longitud);
+            _alarma = cd_alarma._primeraAlarma(ID());
+
+            DateTime initialValue = DateTime.Parse("01/01/0001 0:00:00");
+
+            if (ALARMA() != initialValue)
+            {
+                StartAlarmAsync(_alarma.Fecha, cts.Token);
+
+                //Obtengo las coordenadas del coche con la alarma más próxima a la fecha actual y las guardo en una session
+                AUTOMOVIL coordenadas = new AUTOMOVIL();
+                coordenadas = CD_Auto._obtenerUbicacion(_alarma.AUTOMOVILid);
+                HttpContext.Session.SetString("LatitudCoche", coordenadas.Latitud);
+                HttpContext.Session.SetString("LongitudCoche", coordenadas.Longitud);
+            }
+            
             
 
             //Obtengo los datos de los coches del usuario para mostrarlos
             _coche = CD_Auto.MostrarCOCHE(ID());
+
+            //Mensajes error
+            if (TempData.ContainsKey("AccesoSinUbi"))
+            {
+                ViewBag.AccesoNewAlarm = TempData["AccesoSinUbi"].ToString();
+            }
 
             return View((_coche));
         }

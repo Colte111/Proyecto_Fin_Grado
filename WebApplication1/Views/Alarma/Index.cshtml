@@ -8,29 +8,36 @@
         <br />
         <h3>Alarmas Programadas</h3>
         <br />
-        @foreach (var item in Model)
+        @if(!Model.Any())
         {
-            <div class="col">
-                <i class="bi bi-alarm">
-                    @item.Fecha
-                </i>
-            </div>
-            <div class="col">
-                @using (Html.BeginForm("DeleteAlarma", "Alarma", new { ALARMAid = item.ALARMAid }, FormMethod.Post))
-                {
-                    <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                }
-                <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary">
-                    <a href="@Url.Action("UpdateAlarma","Alarma")" style="text-decoration:none; color:white">
-                        Actualizar Alarma
-                    </a>
-                </button>
-            </div>
-            <br />
+            <div class="alert alert-warning">Programa una alarma para tu vehiculo</div>
         }
-        
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col">
+                    <i class="bi bi-alarm">
+                        @item.Fecha
+                    </i>
+                </div>
+                <div class="col">
+                    @using (Html.BeginForm("DeleteAlarma", "Alarma", new { alarma = Model }, FormMethod.Post))
+                    {
+                        <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    }
+                    <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary">
+                        <a href="@Url.Action("UpdateAlarma","Alarma")" style="text-decoration:none; color:white">
+                            Actualizar Alarma
+                        </a>
+                    </button>
+                </div>
+                <br />
+            }
+        }
+
         @if (ViewBag.AccesoNewAlarm != null)
         {
             <div class="alert alert-warning">@ViewBag.AccesoNewAlarm</div>

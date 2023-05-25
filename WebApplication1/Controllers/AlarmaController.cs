@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.SignalR;
 using WebApplication1;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using capaDominio;
 
 namespace carmaps.Controllers
 {
@@ -19,6 +20,7 @@ namespace carmaps.Controllers
     public class AlarmaController : Controller
     {
         public CD_Alarma cd_alarma = new CD_Alarma();
+        public CD_Automovil cd_auto = new CD_Automovil();
         public USUARIO user = new USUARIO();
         public IHubContext<AlarmHub> _alarmHubContext;
         public CancellationTokenSource cts = new CancellationTokenSource();
@@ -49,6 +51,14 @@ namespace carmaps.Controllers
             _alarma = cd_alarma._primeraAlarma(ID());
 
             return _alarma.Fecha;
+        }
+        //Obtener id del automovil correspondiente a la alarma que sonara 
+        public int AUTOMOVILid_alarma()
+        {
+            var _alarma = new ALARMA();
+            _alarma = cd_alarma._primeraAlarma(ID());
+
+            return _alarma.AUTOMOVILid;
         }
         public async Task StartAlarmAsync(DateTime alarmTime, CancellationToken cancellationToken)
         {
@@ -89,7 +99,10 @@ namespace carmaps.Controllers
             }
 
             HttpContext.Session.SetInt32("AUTOMOVILid", auto.AUTOMOVILid);
-            HttpContext.Session.SetInt32("ALARMAid", ALARMAid);
+            if (_data.Count > 0)
+            {
+                HttpContext.Session.SetInt32("ALARMAid", ALARMAid);
+            }
 
             #region COMENTARIOS de ERROR o EXITO
             if (TempData.ContainsKey("AccesoNewAlarm"))
@@ -116,9 +129,11 @@ namespace carmaps.Controllers
         public IActionResult NewAlarma()
         {
             List <ALARMA> alarma = new List<ALARMA>();
+            AUTOMOVIL auto = new AUTOMOVIL();
             int AUTOMOVILid = (int)HttpContext.Session.GetInt32("AUTOMOVILid");
 
             alarma = cd_alarma._obtenerListAlarma(AUTOMOVILid);
+            auto = cd_auto._obtenerUbicacion(AUTOMOVILid);
             
             //Como solo se puede tener una alarma por coche,compruebo que no hay
             //ninguna para dejarle entrar en la vista
@@ -133,7 +148,24 @@ namespace carmaps.Controllers
             }
             else
             {
-                return View();
+                //Si no hay ubicacion en el coche, le envio a añadir una antes de poner una alarma
+                if(auto.Latitud == "0")
+                {
+                    TempData["AccesoSinUbi"] = "Añade una ubicación a tu vehículo antes de programar una alarma";
+                    return RedirectToAction
+                    (
+                        "Index",
+                        "Auto",
+                        new { AUTOMOVILid = (int)HttpContext.Session.GetInt32("AUTOMOVILid") }
+                    );
+                }
+                else
+                {
+                    HttpContext.Session.SetString("LatitudCoche", auto.Latitud);
+                    HttpContext.Session.SetString("LongitudCoche", auto.Longitud);
+                    return View();
+                }
+               
             }
             
         }
@@ -142,17 +174,27 @@ namespace carmaps.Controllers
         public IActionResult NewAlarma(ALARMA newAlarm)
         {
             int AUTOMOVILid = (int)HttpContext.Session.GetInt32("AUTOMOVILid");
+            DateTime initialValue = DateTime.Parse("01/01/0001 0:00:00");
             try
             {
-                if(newAlarm.Fecha < ALARMA())
+                if (initialValue == ALARMA())
                 {
-                    cts.Cancel();
                     cd_alarma._insertarAlarma(AUTOMOVILid, newAlarm.Fecha);
-                    StartAlarmAsync(newAlarm.Fecha,cts.Token);
+                    StartAlarmAsync(newAlarm.Fecha, cts.Token);
                 }
                 else
                 {
-                    cd_alarma._insertarAlarma(AUTOMOVILid, newAlarm.Fecha);
+                    if (newAlarm.Fecha < ALARMA())
+                    {
+                        //cts.Cancel();
+                        cd_alarma._insertarAlarma(AUTOMOVILid, newAlarm.Fecha);
+                        StartAlarmAsync(newAlarm.Fecha, cts.Token);
+                    }
+                    else
+                    {
+                        cd_alarma._insertarAlarma(AUTOMOVILid, newAlarm.Fecha);
+                    }
+
                 }
 
                 TempData["NewAlarma"] = "Alarma guardada";
@@ -173,10 +215,10 @@ namespace carmaps.Controllers
         [HttpPost]
         public IActionResult DeleteAlarma(int ALARMAid) 
         {
-            ALARMA alarma = new ALARMA();
             try
             {
                 cd_alarma._eliminarAlarma(ALARMAid);
+                StartAlarmAsync(ALARMA(), cts.Token);
                 TempData["SuccessBorrar"] = "Alarma eliminada";
                 return RedirectToAction
                 (
@@ -203,7 +245,16 @@ namespace carmaps.Controllers
             int ALARMAid = (int)HttpContext.Session.GetInt32("ALARMAid");
             try
             {
-                cd_alarma._actualizarAlarma(ALARMAid, alarma.Fecha);
+                if (alarma.Fecha < ALARMA())
+                {
+                    cts.Cancel();
+                    cd_alarma._actualizarAlarma(ALARMAid, alarma.Fecha);
+                    StartAlarmAsync(alarma.Fecha, cts.Token);
+                }
+                else
+                {
+                    cd_alarma._actualizarAlarma(ALARMAid, alarma.Fecha);
+                }
                 TempData["SuccessActualizar"] = "Alarma Actualizada";
                 return RedirectToAction
                 (

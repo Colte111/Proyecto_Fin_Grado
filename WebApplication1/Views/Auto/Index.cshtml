@@ -1,13 +1,7 @@
 ﻿@model List<Modelos.AUTOMOVIL>
 
 @{
-    string var1 = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d100042.7129818819!2d0!3d0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1652116599555!5m2!1ses!2ses";
-    string var2 = "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d100042.7129818819!2d";
-    string var4 = "!3d";
-    string var5 = "!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1652116599555!5m2!1ses!2ses";
-
     Layout = "/Views/Shared/_LayoutAuto.cshtml";
-
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -21,6 +15,10 @@
     </head>
 
     <div class="album py-5 bg-light">
+        @if (ViewBag.AccesoSinUbi != null)
+        {
+            <div class="alert alert-warning">@ViewBag.AccesoSinUbi</div>
+        }
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @foreach (var item in Model)
