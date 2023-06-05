@@ -121,6 +121,10 @@ namespace carmaps.Controllers
             {
                 ViewBag.NewAlarmaError = TempData["NewAlarmaError"].ToString();
             }
+            if (TempData.ContainsKey("AccesoSinUbi"))
+            {
+                ViewBag.AccesoNewAlarm = TempData["AccesoSinUbi"].ToString();
+            }
             #endregion
 
             return View(_data);
@@ -155,7 +159,6 @@ namespace carmaps.Controllers
                     return RedirectToAction
                     (
                         "Index",
-                        "Auto",
                         new { AUTOMOVILid = (int)HttpContext.Session.GetInt32("AUTOMOVILid") }
                     );
                 }

@@ -19,6 +19,10 @@
         {
             <div class="alert alert-warning">@ViewBag.AccesoSinUbi</div>
         }
+        @if (ViewBag.NoCars != null)
+        {
+            <div class="alert alert-warning">@ViewBag.NoCars</div>
+        }
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 @foreach (var item in Model)

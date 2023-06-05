@@ -11,7 +11,7 @@ connection.start().then(function () {
 
 connection.on("alarm", () => {
     // Mostramos la ventana emergente
-    alert("¡Hora de despertar!");
+    alert("¡Hora de ir a por tu coche!");
     document.getElementById("iniciarRuta").style.visibility = "visible";
 });
 

@@ -8,7 +8,7 @@
         <br />
         <h3>Alarmas Programadas</h3>
         <br />
-        @if(!Model.Any())
+        @if (!Model.Any() && ViewBag.AccesoSinUbi == null)
         {
             <div class="alert alert-warning">Programa una alarma para tu vehiculo</div>
         }
@@ -22,7 +22,7 @@
                     </i>
                 </div>
                 <div class="col">
-                    @using (Html.BeginForm("DeleteAlarma", "Alarma", new { alarma = Model }, FormMethod.Post))
+                    @using (Html.BeginForm("DeleteAlarma", "Alarma", new { ALARMAid = item.ALARMAid }, FormMethod.Post))
                     {
                         <button type="submit" style="margin:30px;" class="btn d-inline-flex btn-sm btn-primary">
                             <i class="bi bi-trash"></i>
@@ -53,6 +53,10 @@
         @if (ViewBag.NewAlarmaError != null)
         {
             <div class="alert alert-success">@ViewBag.NewAlarmaError</div>
+        }
+        @if (ViewBag.AccesoSinUbi != null)
+        {
+            <div class="alert alert-success">@ViewBag.AccesoSinUbi</div>
         }
         
         

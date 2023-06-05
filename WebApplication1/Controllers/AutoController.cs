@@ -98,10 +98,10 @@ namespace carmaps.Controllers
             //Obtengo los datos de los coches del usuario para mostrarlos
             _coche = CD_Auto.MostrarCOCHE(ID());
 
-            //Mensajes error
-            if (TempData.ContainsKey("AccesoSinUbi"))
+            if(_coche.Count < 1)
             {
-                ViewBag.AccesoNewAlarm = TempData["AccesoSinUbi"].ToString();
+                TempData["NoCars"] = "¡Crea coches nuevos!";
+                ViewBag.NoCars = TempData["NoCars"].ToString();
             }
 
             return View((_coche));
