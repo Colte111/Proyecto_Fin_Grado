@@ -1,4 +1,4 @@
-﻿USE [Carmaps1]
+﻿USE [Carmaps]
 GO
 /****** Object:  Table [dbo].[ALARMA]    Script Date: 25/05/2023 16:38:30 ******/
 SET ANSI_NULLS ON
